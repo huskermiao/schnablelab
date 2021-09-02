@@ -191,12 +191,11 @@ def dmain(mainfile, type='action'):
         if type == "module" \
         else glob(op.join(cwd, "*.py"))
     actions = []
-    #for ps in sorted(pyscripts):
     for ps in sorted(pyscripts):
         action = op.basename(op.dirname(ps)) \
             if type == 'module' \
             else op.basename(ps).replace('.py', '')
-        if action.startswith('_'):
+        if action.startswith('_') or action=='base':
             continue
         pd = get_module_docstring(ps)
         action_help = [x.rstrip(":.,\n") for x in pd.splitlines(True)
