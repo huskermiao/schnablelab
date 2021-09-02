@@ -23,4 +23,4 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         conciseName(sys.argv[1],sys.argv[2])
     else:
-        print 'Usage:\npython concise_markers_name.py mapfile newfile'
+        print('Usage:\npython concise_markers_name.py mapfile newfile')

@@ -13,16 +13,16 @@ def addmiss(mapfile, rate, outputfile):
         locus_info.append(k[0])
     seqls = list(seq)
     n = len(seq)
-    print 'total %s elements'%n
+    print('total %s elements'%n)
     change_n = int(n*float(rate))
-    print 'you will substitute %s'%change_n
+    print('you will substitute %s'%change_n)
     idx_ls = range(n)
     change_idx = random.sample(idx_ls, change_n)
     for j in change_idx:
         seqls[j] = '-'
     myseq = ''.join(seqls)
     myseq_ls = str2ls(myseq, ll)
-    print 'myseq_ls: %s'%myseq_ls
+    print('myseq_ls: %s'%myseq_ls)
     f1 = open(outputfile,'w')
     f1.write(firstline)
     for p1,p2 in zip(locus_info, myseq_ls):
@@ -37,8 +37,8 @@ def str2ls(string, len_line):
     test = total_len%len_line
     if test == 0:
         lines = total_len/len_line
-        print 'total len: %s\tlines:%s\tlength of \
-line:%s'%(total_len,lines,len_line)
+        print('total len: %s\tlines:%s\tlength of \
+line:%s'%(total_len,lines,len_line))
         start = 0
         end = len_line
         for i in range(lines):
@@ -47,7 +47,7 @@ line:%s'%(total_len,lines,len_line)
             start += len_line
             end += len_line
     else:
-        print 'total length can not exact division the length of line...'
+        print('total length can not exact division the length of line...')
     return myls
 
 if __name__ == "__main__":
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         addmiss(sys.argv[1], sys.argv[2], sys.argv[3])
     else:
-        print '''usage: python add_miss.py map_file miss_rate output_file
+        print('''usage: python add_miss.py map_file miss_rate output_file
 This script only used for testing the performance of GC under different missing data. 
  
 map_file, the simulated map file without any error genotypes and missing data
@@ -64,7 +64,7 @@ output_file, the output map file.
 
 example:
 python add_miss.py original.map 0.5 missing_0.5.map
-'''
+''')
 
 
 

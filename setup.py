@@ -1,4 +1,3 @@
-from struct import pack
 from setuptools import setup, find_packages
 
 with open('README.md') as f:
@@ -6,7 +5,7 @@ with open('README.md') as f:
 
 NAME = 'schnablelab'
 packages = [NAME] + [
-    '.'.join((NAME, x) for x in find_packages(NAME, exclude=['test*.py']))
+    '.'.join((NAME, x)) for x in find_packages(NAME, exclude=['test*.py'])
 ]
 
 setup(

@@ -105,7 +105,6 @@ def bin_markers(df, diff=0, missing_value='-'):
     """
     merge consecutive markers with same genotypes
     return slelected row index
-    Examples:
     """
     df = df.replace(missing_value, np.nan)
     first_row = df.iloc[0,:]
@@ -116,17 +115,13 @@ def bin_markers(df, diff=0, missing_value='-'):
     for idx, row in df_rest.iterrows():
         df_tmp = pd.concat([pre_row, row], axis=1).dropna()
         diff_num = (df_tmp.iloc[:,0] != df_tmp.iloc[:,1]).sum()
-        if diff_num <= diff:
+        if diff_num <= diff: # get ride of it
             temp.append(idx)
         else:
-            if len(temp) > 1:
-                result_ids.append(temp)
-            else:
-                result_ids.append([idx])
+            result_ids.append(temp)
             temp = [idx]
         pre_row = row
-    if result_ids[0][0] != df.index[0]:
-        result_ids.insert(0, [df.index[0]])
+    result_ids.append(temp)
 
     results = []
     represent_idx, block_idx = [], []

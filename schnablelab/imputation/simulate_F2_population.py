@@ -23,7 +23,6 @@ popu_n,ho_a,ho_b,he_x)
 def gen_1st_line(popu_n):
     SMs = '\t'.join([ 'SM-'+str(i+1) for i in range(popu_n)])
     firline = 'locus_name\t' + SMs
-#    print 'firline:\n%s'%firline
     return firline
 
 def gen_F2_genotype(chr_n, eachr_len, mark_dens, popu_n,ho_a,ho_b,he_x):
@@ -39,8 +38,6 @@ gen_F1_genotype(chr_n,eachr_len,mark_dens,ho_a,ho_b)
     for i in range(popu_n):
         pateranl = random.sample(F1_popu_1st_set_geno,1)
         materanl = random.sample(F1_popu_1st_set_geno,1)
-#        print 'pateranl:\n%s'%pateranl
-#        print 'materanl:\n%s'%materanl
         F2_sm_pa = []
         F2_sm_ma = []
         for pa,ma in zip(pateranl[0],materanl[0]):
@@ -61,7 +58,6 @@ gen_F1_genotype(chr_n,eachr_len,mark_dens,ho_a,ho_b)
             geno_seq = get_geno(i,j,ho_a,ho_b,he_x)
             F2_sm_geno.append(geno_seq)
         F2_popu.append(list(''.join(F2_sm_geno)))
-#    print 'F2_popu:\n%s'%F2_popu
     return F2_popu
 
 def get_geno(pa_one, ma_one, ho_a, ho_b, he_x):
@@ -85,7 +81,6 @@ def gen_markers_loci(chr_n, eachr_len, mark_dens):
         pre_locus = random.sample(range(i),j)
         locus = [k+'-'+str(m) for m in sorted(pre_locus)]
         eachr_locus_ls.extend(locus)
-#    print 'eachr_locus_ls:\n%s'%eachr_locus_ls
     return eachr_locus_ls
 
 def gen_F1_genotype(chr_n, eachr_len, mark_dens, ho_a, ho_b):
@@ -98,14 +93,10 @@ def gen_F1_genotype(chr_n, eachr_len, mark_dens, ho_a, ho_b):
         second_geno = ho_b*i
         first_set_geno.append(first_geno)
         second_set_geno.append(second_geno)
-#    print '1st_set_geno:\n%s'%first_set_geno
-#    print '2nd_set_geno:\n%s'%second_set_geno
     exchange_n = stats.poisson.rvs(1,size=chr_n)
-#    print 'exchange_n:\n%s'%exchange_n
     genoseq_idx = range(chr_n)
     for c1,c2,n,idx in zip(first_set_geno, second_set_geno, exchange_n, genoseq_idx):
         if n == 0:
-#            print 'no exchange'
             continue
         else:
             c1_ls = list(c1)
@@ -113,7 +104,6 @@ def gen_F1_genotype(chr_n, eachr_len, mark_dens, ho_a, ho_b):
             geno_n = len(c1)
             middle_point = (geno_n-1)/2.0
             breakpoint_ls = random.sample(range(geno_n), n)
-#            print 'breakpoint_ls:\n%s'%breakpoint_ls
             for i in breakpoint_ls:
                 if i <= middle_point:
                     c1_ls[0:i+1] = change_ls(c1_ls,ho_a,ho_b)[0:i+1]
@@ -125,8 +115,6 @@ def gen_F1_genotype(chr_n, eachr_len, mark_dens, ho_a, ho_b):
             new_c2 = ''.join(c2_ls)
             first_set_geno[idx] = new_c1
             second_set_geno[idx] = new_c2
-#    print '1st_set_geno:\n%s'%first_set_geno
-#    print '2nd_set_geno:\n%s'%second_set_geno
     return first_set_geno, second_set_geno
 
 def change_ls(the_ls, ho_a, ho_b):
@@ -135,7 +123,7 @@ def change_ls(the_ls, ho_a, ho_b):
         if i == ho_a:new_ls.append(ho_b)
         elif i == ho_b:new_ls.append(ho_a)
         else:
-            print 'not a and also not b....'
+            print('not a and also not b....')
     return new_ls
 
 if __name__ == '__main__':

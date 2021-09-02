@@ -781,14 +781,13 @@ def bin(args):
     """
     %prog bin corrected.matrix output.matrix
 
-    compress markers byy merging consecutive markers with same genotypes
+    compress markers by merging consecutive markers with same genotypes
     """
     p = OptionParser(bin.__doc__)
     p.add_option("-i", "--input", help=SUPPRESS_HELP)
     p.add_option("-o", "--output", help=SUPPRESS_HELP)
     p.add_option('--diff_num', default=0, type='int',
-        help='number of different genotypes between two consecutive markers less than or equal to this value will be merged. \
-        missing values will not be counted.')
+        help='number of different genotypes between two consecutive markers less than or equal to this value will be merged. missing values will not be counted.')
     p.add_option('--missing', default='-',
         help='character for missing value in genotype matrix file')
     p.add_option("--logfile", default='GC.bin.log',
