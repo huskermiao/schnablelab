@@ -4,7 +4,6 @@
 """
 Correct Genotype Calls Using Sliding Window Method in biparental populations
 """
-from __future__ import division
 import re
 import sys
 import logging
@@ -12,14 +11,24 @@ import pandas as pd
 import numpy as np
 from scipy.stats import binom, chisquare
 from pathlib import Path
+from configparser import ConfigParser
 from collections import defaultdict, Counter
+
 from schnablelab import __version__ as version
-from schnablelab.apps.Tools import getChunk, eprint, random_alternative, get_blocks, sort_merge_sort, bin_markers
-from schnablelab.apps.base import OptionParser, OptionGroup, ActionDispatcher, SUPPRESS_HELP
-try: 
-    from ConfigParser import ConfigParser
-except ModuleNotFoundError:
-    from configparser import ConfigParser
+from schnablelab.apps.Tools import eprint
+from schnablelab.apps.base import (
+    OptionParser, 
+    OptionGroup, 
+    ActionDispatcher, 
+    SUPPRESS_HELP,
+)
+from schnablelab.imputation.base import (
+    getChunk, 
+    random_alternative, 
+    get_blocks, 
+    sort_merge_sort, 
+    bin_markers,
+)
 
 homo_pattern1 = re.compile('9*09*09*|9*29*29*')
 hete_pattern = re.compile('1|9*09*29*|9*29*09*')
@@ -31,7 +40,7 @@ class ParseConfig(object):
     """
     def __init__(self, configfile):
         config = ConfigParser()
-        cfgFn = config.read(configfile)[0]
+        assert config.read(configfile), 'config file does not exist!'
         self.po_type = config.get('Section1', 'Population_type')
         self.gt_a = config.get('Section2', 'Letter_for_homo1')
         self.gt_h = config.get('Section2', 'Letter_for_hete')
@@ -66,7 +75,7 @@ def het2hom(seqnum):
 
 def get_mid_geno(np_array, cargs_obj):
     """
-    return the genotype with highest probability in the central part.
+    return the genotype with highest probability in the central.
     """
     a_count, b_count, miss_count = count_genos(np_array)
     ab_count = a_count + b_count
@@ -81,7 +90,7 @@ def get_mid_geno(np_array, cargs_obj):
 
 def count_genos(np_array):
     """
-    count genotypes in a given seq. if a genotype is not in the seq, will return 0 rather than raising an error or NaN.
+    count genotypes in a given seq
     """
     counts = Counter(np_array)
     a_count, b_count, miss_count = counts[0], counts[2], counts[9]
@@ -259,7 +268,6 @@ def correct(args):
     q.add_option('--debug', default=False, action="store_true",
                 help='trun on the debug mode that will generate a tmp file containing both original and corrected genotypes for debug use')
 
-    p.set_cpus(cpus=8)
     opts, args = p.parse_args(args)
 
     if len(args) != 2:
@@ -273,12 +281,6 @@ def correct(args):
     if Path(opf).exists():
         eprint("ERROR: Filename collision. The future output file `{}` exists".format(opf))
         sys.exit(1)
-
-    cpus = opts.cpus
-    if sys.version_info[:2] < (2, 7):
-        logging.debug("Python version: {0}. CPUs set to 1.".\
-                    format(sys.version.splitlines()[0].strip()))
-        cpus = 1
 
     logging.basicConfig(filename=opts.logfile, 
         level=logging.DEBUG,
