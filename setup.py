@@ -22,9 +22,10 @@ setup(
     install_requires = [
         'numpy',
         'pandas',
+        'scipy',
         'scikit-learn',
-        'sklearn',
         'matplotlib',
-        'seaborn',],
+        'seaborn',
+        'PyVCF'],
     extra_require = {'DL':['tensorflow', 'torch']}
 )
